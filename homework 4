@@ -1,0 +1,155 @@
+namespace System;
+
+// Vladimir Montero M. 2024-2564
+class Contact
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public string Lastname { get; set; }
+    public string Address { get; set; }
+    public string Telephone { get; set; }
+    public string Email { get; set; }
+    public int Age { get; set; }
+    public bool BestFriend { get; set; }
+}
+class Program
+{
+    static List<Contact> contacts = new List<Contact>();
+    static int nextId = 1;
+
+    static void Main(string[] args)
+    {
+        Console.WriteLine("Welcome to My Contact List");
+        bool running = true;
+        while (running)
+        {
+            Console.WriteLine("\n1. Add Contact   2. View Contacts   3. Search Contact   4. Edit Contact   5. Delete Contact   6. Exit");
+            Console.Write("Choose an option: ");
+            string input = Console.ReadLine();
+
+            if (input == "1")
+            {
+                AddContact();
+            }
+            else if (input == "2")
+            {
+                ViewContacts();
+            }
+            else if (input == "3")
+            {
+                SearchContact();
+            }
+            else if (input == "4")
+            {
+                EditContact();
+            }
+            else if (input == "5")
+            {
+                DeleteContact();
+            }
+            else if (input == "6")
+            {
+                running = false;
+                Console.WriteLine("Exiting...");
+            }
+            else
+            {
+                Console.WriteLine("Invalid option.");
+            }
+        }
+    }
+static void AddContact()
+   {
+     Contact newContact = new Contact();
+     newContact.Id = nextId++;
+     Console.Write("Enter Name: ");
+     newContact.Name = Console.ReadLine();
+     Console.Write("Enter Lastname: ");
+     newContact.Lastname = Console.ReadLine();
+     Console.Write("Enter Address: ");
+     newContact.Address = Console.ReadLine();
+     Console.Write("Enter Telephone: ");
+     newContact.Telephone = Console.ReadLine();
+     Console.Write("Enter Email: ");
+     newContact.Email = Console.ReadLine();
+     Console.Write("Enter Age: ");
+     newContact.Age = Convert.ToInt32(Console.ReadLine());
+     Console.Write("Is Best Friend? (1 = Yes, 2 = No): ");
+     string bfInput = Console.ReadLine();
+     newContact.BestFriend = bfInput == "1";
+     contacts.Add(newContact);
+        Console.WriteLine("Contact added successfully.");
+   }
+    static void ViewContacts()
+    {
+        Console.WriteLine("@Name       Lastname      Address       Phone        Email        Age     BestFriend");
+        Console.WriteLine("\n");
+        Console.WriteLine("-----------------------------------------------------------------------------------");
+        foreach (var contact in contacts)
+        {
+            string bestFriendStr = contact.BestFriend ? "Yes" : "No";
+            Console.WriteLine($"{contact.Name}   {contact.Lastname}   {contact.Address}   {contact.Telephone}   {contact.Email}   {contact.Age}   {bestFriendStr}");
+        }
+    }
+    static void SearchContact()
+    {
+        Console.Write("Enter name to search: ");
+        string searchName = Console.ReadLine();
+
+        foreach (var contact in contacts)
+        {
+            if (contact.Name.ToLower().Contains(searchName.ToLower()))
+            {
+                Console.WriteLine($"Found: {contact.Name} {contact.Lastname}, Phone: {contact.Telephone}");
+                return;
+            }
+        }
+        Console.WriteLine("Contact not found.");
+    }
+    static void EditContact()
+    {
+        Console.Write("Enter contact name to edit: ");
+        string nameToEdit = Console.ReadLine();
+
+        foreach (var contact in contacts)
+        {
+            if (contact.Name.ToLower() == nameToEdit.ToLower())
+            {
+                Console.Write("New Lastname: ");
+                contact.Lastname = Console.ReadLine();
+                Console.Write("New Address: ");
+                contact.Address = Console.ReadLine();
+                Console.Write("New Phone: ");
+                contact.Telephone = Console.ReadLine();
+                Console.Write("New Email: ");
+                contact.Email = Console.ReadLine();
+                Console.Write("New Age: ");
+                contact.Age = Convert.ToInt32(Console.ReadLine());
+                Console.Write("Is Best Friend? (1 = Yes, 2 = No): ");
+                string bfInput = Console.ReadLine();
+                contact.BestFriend = bfInput == "1";
+                Console.WriteLine("Contact updated.");
+                return;
+            }
+        }
+
+        Console.WriteLine("Contact not found.");
+    }
+    static void DeleteContact()
+    {
+        Console.Write("Enter contact name to delete: ");
+        string nameToDelete = Console.ReadLine();
+
+        for (int i = 0; i < contacts.Count; i++)
+        {
+            if (contacts[i].Name.ToLower() == nameToDelete.ToLower())
+            {
+                contacts.RemoveAt(i);
+                Console.WriteLine("Contact deleted.");
+                return;
+            }
+        }
+
+        Console.WriteLine("Contact not found.");
+    }
+}
